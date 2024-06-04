@@ -35,8 +35,24 @@ def listar(opcao: int = 0):
 
 
 @app.get("/listaid")
-def listagem_unica(id : int):
+def listagem_unica(id: int):
     try:
         return lista[id]
     except:
-        return {'Status': 'Erro: Id não existe!'}
+        return {"Status": "Erro: Id não existe!"}
+
+@app.post("/alteraStatus")
+def alterar_tarefa(id :int):
+    try:
+        lista[id].realizada = not lista[id].realizada
+        return {'Status': 'Sucesso, tarefa atualizada!'}
+    except:
+        return {'Status': 'Erro, Tarefa inexistente'}
+    
+@app.post("/deletar")
+def excluir_tarefa(id :int):
+    try:
+        del lista[id]
+        return {'Status': 'Tarefa excluida com sucesso'}
+    except:
+        return {'Status': 'Erro: ID não existe!'}
