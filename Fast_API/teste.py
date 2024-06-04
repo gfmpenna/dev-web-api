@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+
 app = FastAPI()
 
 # @app.get("/")
@@ -22,15 +23,15 @@ app = FastAPI()
 #     for i in usuarios:
 #         if i[1] == nome:
 #             return i
-    
+
 #     return "usuario não existe"
 
 
 class Usuario(BaseModel):
     id: int
     nome: str
-    
 
-@app.post('/usuario')
+
+@app.post("/usuario")
 def main(nome):
-    return {'nome': nome}
+    return {"nome": nome}
