@@ -6,37 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <title>Pokedex</title>
 </head>
 
 <body>
-
     <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">bulbasaur</h5>
-                    </div>
-                </div>
-            </div>
+        <div id="linha" class="row">
+            <!-- Os cartões serão adicionados aqui -->
         </div>
     </div>
+
     <script>
-        $.ajax({
-            url: "https://pokeapi.co/api/v2/pokemon/1",
-            method: 'get',
-            async: false,
-            success: function (resposta) {
-                console.log(resposta);
+        $(document).ready(function () {
+            var linha = document.getElementById('linha');
+            var conteudo = '';
+
+            for (let i = 1; i <= 54; i++) { // Loop de 1 a 10 para os primeiros 10 Pokémon
+                $.ajax({
+                    url: "https://pokeapi.co/api/v2/pokemon/" + i, // Modifica a URL para cada Pokémon
+                    method: 'get',
+                    async: false, // Atenção: requisições síncronas são desaconselhadas; considere usar promessas para melhor prática
+                    success: function (resposta) {
+                        console.log(resposta);
+
+                        conteudo += '<div class="col-sm">\
+                                            <div class="card" style="width: 18rem;">\
+                                                <img class="card-img-top"style="width: 18rem; height: 18rem" src="'+ resposta.sprites.other.dream_world.front_default + '" alt="Card image cap">\
+                                                <div class="card-body">\
+                                                    <h5 class="card-title">'+ resposta.forms[0].name + '</h5>\
+                                                    <p class="card-text">Altura: '+ resposta.height + ' dm</p>\
+                                                    <p class="card-text">Peso: '+ resposta.weight + ' hg</p>\
+                                                    <p class="card-text">Tipos: '+ resposta.types.map(typeInfo => typeInfo.type.name).join(', ') + '</p>\
+                                                </div>\
+                                            </div>\
+                                        </div>';
+                    }
+                });
             }
-        })
+
+            // Atualiza o conteúdo do container após todas as requisições
+            linha.innerHTML = conteudo;
+        });
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
